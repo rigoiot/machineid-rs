@@ -131,6 +131,26 @@ pub struct IdBuilder {
 }
 
 impl IdBuilder {
+    /// Get final string
+    pub fn final_string(&mut self) -> Result<String, HWIDError> {
+        if self.parts.len() == 0 {
+            panic!("You must add at least one element to make a machine id");
+        }
+        let final_string = self
+            .parts
+            .iter()
+            .map(|p| p.to_string())
+            .collect::<Result<String, HWIDError>>()?;
+        Ok(final_string)
+    }
+
+    /// Generate hash
+    pub fn generate_hash(&mut self, key: &str, final_string: &str) -> Result<String, HWIDError> {
+        Ok(self
+            .hash
+            .generate_hash(key.as_bytes(), String::from(final_string)))
+    }
+
     /// Joins every part together and returns a `Result` that may be the hashed HWID or a `HWIDError`.
     ///
     /// # Errors
