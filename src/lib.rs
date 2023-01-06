@@ -46,7 +46,7 @@ pub enum HWIDComponent {
     /// Host machine name
     MachineName,
     /// Mac Address
-    MacAddress,
+    MacAddress(&'static str),
     /// CPU Vendor ID
     CPUID,
     /// The contents of a file
@@ -80,7 +80,7 @@ impl HWIDComponent {
                     .ok_or(HWIDError::new("HostName", "Could not retrieve Host Name"))?;
                 Ok(name)
             }
-            MacAddress => get_mac_address(),
+            MacAddress(ifname) => get_mac_address(ifname),
             CPUID => {
                 let sys = System::new_all();
                 let processor = sys.global_processor_info();
@@ -232,7 +232,7 @@ mod test {
             .add_component(HWIDComponent::CPUCores)
             .add_component(HWIDComponent::CPUID)
             .add_component(HWIDComponent::DriveSerial)
-            .add_component(HWIDComponent::MacAddress)
+            .add_component(HWIDComponent::MacAddress("eth0"))
             .add_component(HWIDComponent::FileToken("test.txt"))
             .add_component(HWIDComponent::Username)
             .add_component(HWIDComponent::MachineName);
@@ -250,7 +250,7 @@ mod test {
             .add_component(HWIDComponent::CPUCores)
             .add_component(HWIDComponent::CPUID)
             .add_component(HWIDComponent::DriveSerial)
-            .add_component(HWIDComponent::MacAddress)
+            .add_component(HWIDComponent::MacAddress("eth0"))
             .add_component(HWIDComponent::FileToken("test.txt"))
             .add_component(HWIDComponent::Username)
             .add_component(HWIDComponent::MachineName);
@@ -268,7 +268,7 @@ mod test {
             .add_component(HWIDComponent::CPUCores)
             .add_component(HWIDComponent::CPUID)
             .add_component(HWIDComponent::DriveSerial)
-            .add_component(HWIDComponent::MacAddress)
+            .add_component(HWIDComponent::MacAddress("eth0"))
             .add_component(HWIDComponent::FileToken("test.txt"))
             .add_component(HWIDComponent::Username)
             .add_component(HWIDComponent::MachineName);

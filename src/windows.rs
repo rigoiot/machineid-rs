@@ -40,7 +40,7 @@ pub(crate) fn get_disk_id() -> Result<String, HWIDError>{
 }
 
 #[cfg(target_os="windows")]
-pub(crate) fn get_mac_address() -> Result<String, HWIDError>{
+pub(crate) fn get_mac_address(ifname:&str) -> Result<String, HWIDError>{
     let con = WMIConnection::new(COMLibrary::new().unwrap().into())?;
     let ser:Vec<MACGeneric> = con.raw_query("SELECT MACAddress from Win32_NetworkAdapter")?;
     Ok(ser.get(0)
