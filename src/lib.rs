@@ -80,7 +80,7 @@ impl HWIDComponent {
                     .ok_or(HWIDError::new("HostName", "Could not retrieve Host Name"))?;
                 Ok(name)
             }
-            MacAddress => get_mac_address(),
+            MacAddress => get_mac_address(Some(String::from("eth0"))),
             CPUID => {
                 let sys = System::new_all();
                 let processor = sys.global_processor_info();
